@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOXRATE | Elite Hacking Team</title>
+    <style>
+        :root {
+            --matrix-green: #00ff41;
+            --terminal-black: #0d0208;
+            --dark-green: #003b00;
+        }
+        body {
+            background-color: var(--terminal-black);
+            color: var(--matrix-green);
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .terminal-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 30px auto;
+            border: 1px solid var(--matrix-green);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.4);
+            position: relative;
+        }
+        .terminal-header {
+            padding: 8px 15px;
+            background-color: var(--dark-green);
+            border-bottom: 1px solid var(--matrix-green);
+            display: flex;
+            justify-content: space-between;
+        }
+        .terminal-body {
+            padding: 20px;
+            height: 70vh;
+            overflow-y: auto;
+        }
+        .command {
+            color: var(--matrix-green);
+            margin-bottom: 15px;
+        }
+        .response {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        .blinking-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background: var(--matrix-green);
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.08;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--terminal-black);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--matrix-green);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas" class="matrix-bg"></canvas>
+    
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <span>root@noxrate:~</span>
+            <span>access_level: ELITE</span>
+        </div>
+        <div class="terminal-body">
+            <div class="command">root@noxrate:~# whoami</div>
+            <div class="response">NOXRATE Hacking Team</div>
+            
+            <div class="command">root@noxrate:~# date</div>
+            <div class="response" id="currentDate"></div>
+            
+            <div class="command">root@noxrate:~# cat about.txt</div>
+            <div class="response">NOXRATE olarak hacking ve güvenlik alanında çalışıyoruz.</div>
+            <div class="response">Basit ve etkili yöntemler kullanıyoruz.</div>
+            
+            <div class="command">root@noxrate:~# ls -la /team/</div>
+            <div class="response">► Mhdragon</div>
+            <div class="response">► Blodwhite</div>
+            <div class="response">► ve diğerleri...</div>
+            
+            <div class="command">root@noxrate:~# cat mission.txt</div>
+            <div class="response">Zafiyet araştırmaları ve güvenlik testleri yapıyoruz.</div>
+            
+            <div class="command">root@noxrate:~# <span class="blinking-cursor"></span></div>
+        </div>
+    </div>
+
+    <script>
+        // Advanced Matrix Effect
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        
+        const rainDrops = [];
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = Math.random() * -100;
+        }
+        
+        const draw = () => {
+            ctx.fillStyle = 'rgba(13, 2, 8, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                const y = rainDrops[i] * fontSize;
+                
+                ctx.fillText(text, i * fontSize, y);
+                
+                if (y > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+        
+        setInterval(draw, 33);
+        
+        // Date update
+        document.getElementById('currentDate').textContent = new Date().toLocaleString();
+        
+        // Dynamic commands
+        const commands = [
+            "scan --target=all --stealth",
+            "exploit --vulnerability=CVE-2023-32456",
+            "bypass --security=firewall,ids",
+            "analyze --network=192.168.1.0/24",
+            "access --level=root --method=privilege_escalation"
+        ];
+        
+        setInterval(() => {
+            const cursor = document.querySelector('.blinking-cursor');
+            if (cursor && cursor.previousElementSibling) {
+                cursor.previousElementSibling.textContent = commands[Math.floor(Math.random() * commands.length)];
+            }
+        }, 3000);
+        
+        // Resize handler
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
